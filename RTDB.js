@@ -6,6 +6,7 @@ import {
   ScrollView,
   Button,
   FlatList,
+  TextInput,
 } from 'react-native';
 import config from './config';
 import * as firebase from 'firebase';
@@ -21,7 +22,7 @@ export default class RTDB extends Component {
             items: [],
             type: 'user,message',
             index: 'firebase_user,firebase_message',
-            term: '*b*',
+            term: '*',
             matchWholePhrase: false,
             size: 10,
             from: 0,
@@ -32,13 +33,13 @@ export default class RTDB extends Component {
         let query = {
             index: this.state.index,
             type: this.state.type,
-            size: this.state.size,
-            from: this.state.from,
-            q: this.state.term,
+            size: !this.state.size ? 10 : this.state.size,
+            from: !this.state.from ? 0 : this.state.from,
+            q: !this.state.term ? '*' : this.state.term,
         };
 
-    // this.buildQueryBody(query, this.state.term, this.matchWholePhrase);
-    return query;
+        // this.buildQueryBody(query, this.state.term, this.state.matchWholePhrase);
+        return query;
   }
 
     buildQueryBody = (query, term, matchWholePhrase) => {
@@ -68,15 +69,21 @@ export default class RTDB extends Component {
             return;
         }
         const items = [];
-        let dat = snap.val().hits.hits;
-        console.log(dat)
-        Object.keys(dat).forEach((key) => {
-            console.log(dat[key]);
-            items.push({
-                key: dat[key]._id,
-                source: JSON.stringify(dat[key]._source, null, 2),
+        if(snap.val().hits.total > 0){
+            let dat = snap.val().hits.hits;
+            Object.keys(dat).forEach((key) => {
+                items.push({
+                    key: dat[key]._id,
+                    source: JSON.stringify(dat[key]._source, null, 2),
+                    JSON_ALL: JSON.stringify(dat[key], null, 2),
+                })
             })
-        })
+        }else{
+            items.push({
+                key: '',
+                source: 'no data',
+            })
+        }
         this.setState({
             items: items,
         });
@@ -87,12 +94,24 @@ export default class RTDB extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.buttons}>
+                <View style={styles.actions}>
+                <TextInput
+                    placeholder={this.state.term}
+                    onChangeText={(text) => this.setState({term: text})}
+                />
+                <TextInput
+                    placeholder={this.state.size.toString()}
+                    onChangeText={(integer) => this.setState({size: integer})}
+                />
+                <TextInput
+                    placeholder={this.state.from.toString()}
+                    onChangeText={(integer) => this.setState({from: integer})}
+                />
                 <Button onPress={() => this.doSearch(this.buildQuery())} title='検索'/>
                 </View>
                 <FlatList
                 data={this.state.items}
-                renderItem={({item}) => <Text>{item.key}{item.source}</Text>}
+                renderItem={({item}) => <Text>{item.key}{item.source}{item.JSON_ALL}</Text>}
                 />
             </View>
         );
@@ -105,7 +124,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
     },
-    buttons: {
+    actions: {
         marginTop:20,
         backgroundColor: '#F5FCFF',
     },
