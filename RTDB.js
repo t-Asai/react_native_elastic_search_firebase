@@ -111,7 +111,7 @@ export default class RTDB extends Component {
                 </View>
                 <FlatList
                 data={this.state.items}
-                renderItem={({item}) => <Text>{item.key}{item.source}{item.JSON_ALL}</Text>}
+                renderItem={({item}) => <Text>{item.source}</Text>}
                 />
             </View>
         );
