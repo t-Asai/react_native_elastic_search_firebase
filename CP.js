@@ -1,3 +1,6 @@
+/*
+* this file is no more than copy and paste
+*/
 import React, { Component } from 'react';
 import {
   StyleSheet,

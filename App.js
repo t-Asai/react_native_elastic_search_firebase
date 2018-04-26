@@ -3,14 +3,15 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import CP from './CP'
+// import ES from './CP'
+import ES from './RTDB'
 
 export default class App extends Component {
 
   render() {
     return (
       <View style={styles.container}>
-        <CP/>
+        <ES/>
       </View>
     );
   }
