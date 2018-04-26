@@ -1,42 +1,28 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
+  ScrollView,
   Button,
 } from 'react-native';
 import config from './config';
 import * as firebase from 'firebase';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 
 export default class App extends Component {
   render() {
-    buildQuery()
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-        <Button onPress={() => doSearch(buildQuery())} title='更新'/>
+        <View style={styles.buttons}>
+        <Button onPress={() => doSearch(buildQuery())} title='検索'/>
+        <Button onPress={() => this.setState({ })} title='更新'/>
+        </View>
+        <ScrollView>
+          <Text>
+          text: {value}
+          </Text>
+        </ScrollView>
       </View>
     );
   }
@@ -45,19 +31,12 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  buttons: {
+    marginTop:20,
+    backgroundColor: '#F5FCFF',
   },
 });
 
@@ -65,6 +44,7 @@ const styles = StyleSheet.create({
 var PATH = "search";
 firebase.initializeApp(config);
 var database = firebase.database();
+let value;
 
 function buildQuery() {
   // this just gets data out of the form
@@ -140,4 +120,5 @@ function showResults(snap) {
   console.log('dat->');
   console.log(JSON.stringify(dat, null, 2));
   console.log('<-dat');
+  value = JSON.stringify(dat, null, 2)
 }
