@@ -1,0 +1,3 @@
+rootProject.name = 'react_native_elastic_search_firebase'
+
+include ':app'
