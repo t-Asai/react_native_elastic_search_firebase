@@ -1,0 +1,7 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
+
+target 'react_native_elastic_search_firebase' do
+  pod 'Firebase/Core'
+  pod 'Firebase/Firestore'
+end
