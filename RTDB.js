@@ -38,7 +38,7 @@ export default class RTDB extends Component {
             q: !this.state.term ? '*' : this.state.term,
         };
         return query;
-  }
+    }
 
     doSearch = (query) => {
         let ref = this.database.ref().child(this.PATH);
