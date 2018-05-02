@@ -72,7 +72,7 @@ export default class RTDB extends Component {
             items: items,
         });
         snap.ref.off('value', this.showResults);
-        snap.ref.remove();
+        // snap.ref.remove();
     }
 
     render() {
