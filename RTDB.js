@@ -37,23 +37,7 @@ export default class RTDB extends Component {
             from: !this.state.from ? 0 : this.state.from,
             q: !this.state.term ? '*' : this.state.term,
         };
-
-        // this.buildQueryBody(query, this.state.term, this.state.matchWholePhrase);
         return query;
-  }
-
-    buildQueryBody = (query, term, matchWholePhrase) => {
-        if( matchWholePhrase ) {
-            let body = query.body = {};
-            body.query = {
-                "match_phrase": {
-                    "_all": term
-                }
-            }
-        }
-        else {
-            query.q = term;
-        }
     }
 
     doSearch = (query) => {
@@ -88,7 +72,7 @@ export default class RTDB extends Component {
             items: items,
         });
         snap.ref.off('value', this.showResults);
-        snap.ref.remove();
+        // snap.ref.remove();
     }
 
     render() {
