@@ -20,8 +20,8 @@ export default class FS extends Component {
         this.unsubscribe = null;
         this.state = {
             items: [],
-            type: 'user,message',
-            index: 'firebase_user,firebase_message',
+            type: 'user',
+            index: 'firebase_user',
             term: '*',
             matchWholePhrase: false,
             size: 10,
@@ -53,7 +53,7 @@ export default class FS extends Component {
             this.setState({
                 items: [{
                     key: 0,
-                    source: JSON.stringify(snap.data()),
+                    source: snap.data(),
                 }],
             })
             snap.ref.delete()
@@ -81,7 +81,7 @@ export default class FS extends Component {
                 </View>
                 <FlatList
                     data={this.state.items}
-                    renderItem={({item}) => <Text>{item.source}</Text>}
+                    renderItem={({item}) => <Text>{JSON.stringify(item.source,undefined,1)}</Text>}
                 />
             </View>
         );
